@@ -29,6 +29,6 @@ export interface SessionSyncPayload {
 export interface OrganizationInvitePreview {
   email?: string
   role_code?: string
-  organization?: { id: string; name: string; slug?: string }
+  organization?: { id: string, name: string, slug?: string }
   expires_at?: string
 }

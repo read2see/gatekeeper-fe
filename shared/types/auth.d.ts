@@ -9,7 +9,7 @@ declare module '#auth-utils' {
 
   interface UserSession {
     platformRoles: string[]
-    organizations: Array<{ id: string; name: string; slug: string; role_code: string }>
+    organizations: Array<{ id: string, name: string, slug: string, role_code: string }>
     loggedInAt: string
   }
 
