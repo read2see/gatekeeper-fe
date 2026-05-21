@@ -1,6 +1,4 @@
 /* eslint-disable -- copied verbatim from backend API spec */
-/* eslint-disable -- copied verbatim from backend API spec */
-/* eslint-disable -- copied verbatim from backend API spec */
 export type HttpVerb = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 export type UUID = string;
 export type DateTimeString = string;

@@ -44,7 +44,7 @@ export function useOrganizations() {
   }
 
   function deleteOrganization(organizationId: string) {
-    return api.delete<void>(apiSpec.organizations.delete.path, {
+    return api.delete(apiSpec.organizations.delete.path, {
       params: { organizationId }
     })
   }
