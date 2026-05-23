@@ -6,7 +6,7 @@ import {
   type UpdateProfileFormData
 } from '~/schemas/auth'
 import { apiSpec } from '~/types/api-spec'
-import type { UserProfile } from '~/types/domain'
+import type { AuthMeResponse, UserProfile } from '~/types/domain'
 import { formatRoleCode } from '~/utils/table'
 
 definePageMeta({
@@ -16,8 +16,15 @@ definePageMeta({
 const { user, platformRoles, organizations } = useAuth()
 const { session } = useUserSession()
 const api = useApiClient()
+const { syncHasAvatar } = useProfileAvatar()
 
-await useAsyncData('profile-me', () => api.get<UserProfile>(apiSpec.users.me.path))
+await useAsyncData('profile-me', async () => {
+  const profile = await api.get<AuthMeResponse>(apiSpec.users.me.path)
+
+  syncHasAvatar(profile.has_avatar === true)
+
+  return profile
+})
 
 const profileState = reactive<UpdateProfileFormData>({
   full_name: user.value?.full_name ?? ''
@@ -99,6 +106,12 @@ const {
               Identity
             </h2>
           </template>
+
+          <ProfileAvatarEditor
+            :full-name="user?.full_name"
+            :email="user?.email"
+            class="mb-6"
+          />
 
           <div class="mb-6 space-y-1 text-sm">
             <p class="text-muted">
