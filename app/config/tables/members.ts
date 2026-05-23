@@ -1,7 +1,7 @@
 import type { DataTableConfig } from '~/types/table'
 import type { Membership } from '~/types/domain'
 import type { MembershipStatus } from '~/types/api-spec'
-import { formatRoleCode, parseListPageTotal } from '~/utils/table'
+import { formatRoleCode, formatTableDate, parseListPageTotal } from '~/utils/table'
 
 export function useMembersTableConfig(organizationId: string): DataTableConfig<Membership> {
   const { listMembers, removeMember } = useMembers(organizationId)
@@ -27,12 +27,14 @@ export function useMembersTableConfig(organizationId: string): DataTableConfig<M
         id: 'name',
         header: 'Name',
         cell: row => row.full_name ?? row.email ?? row.user_id ?? '—',
-        class: 'font-medium text-highlighted'
+        class: 'font-medium text-highlighted min-w-[8rem]',
+        subline: row => row.full_name && row.email ? row.email : null
       },
       {
         id: 'email',
         accessorKey: 'email',
-        header: 'Email'
+        header: 'Email',
+        class: 'hidden md:table-cell'
       },
       {
         id: 'role_code',
@@ -40,7 +42,8 @@ export function useMembersTableConfig(organizationId: string): DataTableConfig<M
         header: 'Role',
         cell: row => formatRoleCode(row.role_code),
         sortable: true,
-        sortKey: 'role_code'
+        sortKey: 'role_code',
+        class: 'whitespace-nowrap'
       },
       {
         id: 'status',
@@ -48,7 +51,8 @@ export function useMembersTableConfig(organizationId: string): DataTableConfig<M
         header: 'Status',
         cell: 'status',
         sortable: true,
-        sortKey: 'status'
+        sortKey: 'status',
+        class: 'whitespace-nowrap'
       },
       {
         id: 'created_at',
@@ -56,9 +60,17 @@ export function useMembersTableConfig(organizationId: string): DataTableConfig<M
         header: 'Joined',
         cell: 'date',
         sortable: true,
-        sortKey: 'created_at'
+        sortKey: 'created_at',
+        class: 'hidden lg:table-cell whitespace-nowrap'
       }
     ],
+    mobileRow: {
+      primary: row => row.full_name ?? row.email ?? row.user_id ?? '—',
+      detail: row => row.full_name && row.email ? row.email : null,
+      status: row => row.status,
+      role: row => row.role_code,
+      meta: row => row.created_at ? `Joined ${formatTableDate(row.created_at)}` : null
+    },
     filters: [
       {
         id: 'status',

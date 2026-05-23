@@ -28,6 +28,16 @@ export interface DataTableColumnDef<T> {
   sortable?: boolean
   sortKey?: string
   class?: string
+  /** Secondary line shown below the primary value on smaller breakpoints. */
+  subline?: (row: T) => string | null | undefined
+}
+
+export interface DataTableMobileRowConfig<T> {
+  primary: (row: T) => string
+  detail?: (row: T) => string | null | undefined
+  status?: (row: T) => string | null | undefined
+  role?: (row: T) => string | null | undefined
+  meta?: (row: T) => string | null | undefined
 }
 
 export interface DataTableFilterOption {
@@ -96,6 +106,7 @@ export interface DataTableConfig<T> {
   selectable?: boolean
   filters?: DataTableFilterDef[]
   columns: DataTableColumnDef<T>[]
+  mobileRow?: DataTableMobileRowConfig<T>
   rowActions?: DataTableRowAction<T>[]
   bulkActions?: DataTableBulkAction<T>[]
   emptyState?: DataTableEmptyState

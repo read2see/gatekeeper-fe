@@ -12,7 +12,7 @@ const config = useMembersTableConfig(organizationId)
 </script>
 
 <template>
-  <div>
+  <div class="contents">
     <DataTablePage :config="config" />
     <MembersChangeMemberRoleModal :organization-id="organizationId" />
   </div>

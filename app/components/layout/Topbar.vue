@@ -7,6 +7,29 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
+const { getOrganization } = useOrganizations()
+
+const organizationId = computed(() => {
+  const id = route.params.organizationId
+  return typeof id === 'string' ? id : undefined
+})
+
+const { data: organization } = useAsyncData(
+  () => organizationId.value ? `org-context-${organizationId.value}` : 'org-context-skip',
+  () => organizationId.value
+    ? getOrganization(organizationId.value)
+    : Promise.resolve(null),
+  { watch: [organizationId] }
+)
+
+const organizationName = computed(() => organization.value?.name)
+
+function formatSegmentLabel(segment: string) {
+  return segment
+    .split('-')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
 
 const autoBreadcrumbs = computed<BreadcrumbItem[]>(() => {
   if (props.breadcrumbs?.length) {
@@ -29,11 +52,16 @@ const autoBreadcrumbs = computed<BreadcrumbItem[]>(() => {
       continue
     }
 
+    if (segment === 'org' && organizationId.value) {
+      items.push({
+        label: organizationName.value ?? 'Organization',
+        to: `/org/${organizationId.value}`
+      })
+      continue
+    }
+
     items.push({
-      label: segment
-        .split('-')
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(' '),
+      label: formatSegmentLabel(segment),
       to: path
     })
   }
