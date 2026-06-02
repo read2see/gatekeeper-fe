@@ -21,7 +21,7 @@ defineProps<{
 
     <div
       v-if="$slots.actions"
-      class="flex shrink-0 flex-wrap items-center gap-2"
+      class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center"
     >
       <slot name="actions" />
     </div>

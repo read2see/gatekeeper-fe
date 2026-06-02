@@ -203,6 +203,15 @@ export function useDataTable<T extends { id?: string }>(config: DataTableConfig<
             return formatTableDate(value as string | null | undefined)
           }
 
+          const subline = column.subline?.(row.original)
+
+          if (subline) {
+            return h('div', { class: 'min-w-0 space-y-0.5' }, [
+              h('p', { class: 'truncate' }, String(value ?? '—')),
+              h('p', { class: 'truncate text-sm text-muted md:hidden' }, subline)
+            ])
+          }
+
           return value ?? '—'
         },
         meta: column.class

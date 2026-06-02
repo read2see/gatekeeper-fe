@@ -67,7 +67,7 @@ const tableKey = computed(() => [
 </script>
 
 <template>
-  <UDashboardPanel>
+  <UDashboardPanel class="min-w-0 w-full flex-1">
     <template #header>
       <LayoutTopbar
         :title="config.meta.title"
@@ -76,7 +76,7 @@ const tableKey = computed(() => [
     </template>
 
     <template #body>
-      <div class="flex flex-col gap-6 p-4 sm:p-6">
+      <div class="flex w-full min-w-0 flex-1 flex-col gap-6 p-4 sm:p-6">
         <UiPageHeader
           :title="config.meta.title"
           :description="config.meta.description"
@@ -86,6 +86,7 @@ const tableKey = computed(() => [
             #actions
           >
             <UButton
+              class="w-full justify-center sm:w-auto"
               :to="config.createAction.to"
               :icon="config.createAction.icon ?? 'i-lucide-plus'"
             >
@@ -94,7 +95,10 @@ const tableKey = computed(() => [
           </template>
         </UiPageHeader>
 
-        <UCard :ui="{ body: 'p-0 sm:p-0' }">
+        <UCard
+          :ui="{ body: 'p-0 sm:p-0' }"
+          class="w-full min-w-0"
+        >
           <DataTableToolbar
             v-model:search="search"
             :searchable="config.searchable"
@@ -142,6 +146,7 @@ const tableKey = computed(() => [
               #actions
             >
               <UButton
+                class="w-full justify-center sm:w-auto"
                 :to="config.createAction.to"
                 :icon="config.createAction.icon ?? 'i-lucide-plus'"
               >
@@ -151,7 +156,17 @@ const tableKey = computed(() => [
           </UiEmptyState>
 
           <template v-else>
-            <div class="overflow-x-auto">
+            <DataTableMobileList
+              v-if="config.mobileRow"
+              :config="config"
+              :items="items"
+              :get-row-id="getRowId"
+            />
+
+            <div
+              class="w-full overflow-x-auto"
+              :class="config.mobileRow ? 'hidden md:block' : undefined"
+            >
               <UTable
                 :key="tableKey"
                 v-model:row-selection="rowSelection"
@@ -160,7 +175,7 @@ const tableKey = computed(() => [
                 :loading="pending"
                 :get-row-id="getRowId"
                 sticky="header"
-                class="min-w-full border-b border-default"
+                class="w-full min-w-full border-b border-default"
               />
             </div>
 
@@ -169,7 +184,7 @@ const tableKey = computed(() => [
                 {{ total }} total
               </p>
 
-              <div class="flex flex-wrap items-center gap-3">
+              <div class="flex min-w-0 flex-wrap items-center gap-3">
                 <USelect
                   :model-value="size"
                   :items="[
@@ -180,16 +195,19 @@ const tableKey = computed(() => [
                   ]"
                   value-key="value"
                   label-key="label"
-                  class="w-32"
+                  class="w-full sm:w-32"
                   @update:model-value="setPageSize(Number($event))"
                 />
 
-                <UPagination
-                  :page="page"
-                  :items-per-page="size"
-                  :total="total"
-                  @update:page="setPage($event)"
-                />
+                <div class="min-w-0 overflow-x-auto">
+                  <UPagination
+                    :page="page"
+                    :items-per-page="size"
+                    :total="total"
+                    :sibling-count="1"
+                    @update:page="setPage($event)"
+                  />
+                </div>
               </div>
             </div>
           </template>
