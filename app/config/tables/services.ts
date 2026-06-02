@@ -1,6 +1,6 @@
 import type { DataTableConfig } from '~/types/table'
 import type { ApiService } from '~/types/domain'
-import type { ApiServiceStatus, ListResponse } from '~/types/api-spec'
+import type { ApiServiceStatus } from '~/types/api-spec'
 import { parseListPageTotal } from '~/utils/table'
 
 export function useServicesTableConfig(organizationId: string): DataTableConfig<ApiService> {

@@ -1,6 +1,6 @@
 import type { DataTableConfig } from '~/types/table'
 import type { Membership } from '~/types/domain'
-import type { ListResponse, MembershipStatus } from '~/types/api-spec'
+import type { MembershipStatus } from '~/types/api-spec'
 import { formatRoleCode, parseListPageTotal } from '~/utils/table'
 
 export function useMembersTableConfig(organizationId: string): DataTableConfig<Membership> {
