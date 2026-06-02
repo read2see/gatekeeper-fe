@@ -8,7 +8,7 @@ The app uses a Nitro BFF layer to proxy authenticated requests to the Gatekeeper
 
 - Node.js 20+
 - [pnpm](https://pnpm.io) 9+
-- A running [Gatekeeper](https://github.com/your-org/gatekeeper) API (default: `http://localhost:8080`)
+- A running [Gatekeeper](https://github.com/read2see/gatekeeper) API (default: `http://localhost:8080`)
 
 ## Setup
 
@@ -80,6 +80,35 @@ shared/types/     # nuxt-auth-utils session type augmentation
 2. Nitro proxies to Gatekeeper, captures the backend session cookie, and stores it in sealed session data.
 3. `useUserSession()` hydrates user profile and organization memberships for SSR and client navigation.
 4. Authenticated API calls go through `/api/gatekeeper/*`, which forwards the backend cookie server-side.
+
+## Docker container
+
+Build the image:
+
+```bash
+docker build -t gatekeeper-fe .
+```
+
+Run the container (replace secrets and API URLs for your environment):
+
+```bash
+docker run --rm -p 3000:3000 \
+  -e NUXT_SESSION_PASSWORD=your-32-character-or-longer-secret-here \
+  -e NUXT_GATEKEEPER_API_BASE=http://host.docker.internal:8080 \
+  -e NUXT_PUBLIC_GATEKEEPER_API_BASE=http://localhost:8080 \
+  gatekeeper-fe
+```
+
+The app listens on port `3000` inside the container. Open `http://localhost:3000` on the host.
+
+- `NUXT_GATEKEEPER_API_BASE` is the URL Nitro uses from inside the container to reach the Gatekeeper API. Use a Docker network service name (e.g. `http://gatekeeper:8080`) when both apps run in Compose, or `http://host.docker.internal:8080` to reach a backend on the host (Docker Desktop on Windows/macOS).
+- `NUXT_PUBLIC_GATEKEEPER_API_BASE` is exposed to the browser (e.g. avatar URLs). Set it to whatever URL clients use to reach Gatekeeper, not the internal Docker hostname.
+
+You can pass env vars from a file instead of `-e`:
+
+```bash
+docker run --rm -p 3000:3000 --env-file .env gatekeeper-fe
+```
 
 ## Deployment
 
