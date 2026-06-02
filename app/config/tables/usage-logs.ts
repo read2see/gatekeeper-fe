@@ -1,6 +1,6 @@
 import type { DataTableConfig } from '~/types/table'
 import type { UsageLog } from '~/types/domain'
-import type { HttpMethod, ListResponse } from '~/types/api-spec'
+import type { HttpMethod } from '~/types/api-spec'
 import { parseListPageTotal } from '~/utils/table'
 
 export function useUsageLogsTableConfig(organizationId: string): DataTableConfig<UsageLog> {

@@ -1,6 +1,6 @@
 import type { DataTableConfig } from '~/types/table'
 import type { ApiKey } from '~/types/domain'
-import type { ApiKeyStatus, ListResponse } from '~/types/api-spec'
+import type { ApiKeyStatus } from '~/types/api-spec'
 import { parseListPageTotal } from '~/utils/table'
 
 export function useApiKeysTableConfig(
