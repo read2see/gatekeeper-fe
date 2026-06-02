@@ -1,6 +1,5 @@
 import type { DataTableConfig } from '~/types/table'
 import type { AdminUser } from '~/types/domain'
-import type { ListResponse } from '~/types/api-spec'
 import { parseListPageTotal } from '~/utils/table'
 
 function parseBooleanFilter(value?: string): boolean | undefined {

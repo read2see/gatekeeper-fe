@@ -132,7 +132,7 @@ export function useAdmin() {
   }
 
   function removeUserRole(userId: string, roleId: string) {
-    return api.delete<void>(apiSpec.admin.removeUserRole.path, {
+    return api.delete(apiSpec.admin.removeUserRole.path, {
       params: { userId, roleId }
     })
   }

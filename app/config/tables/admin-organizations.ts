@@ -1,6 +1,5 @@
 import type { DataTableConfig } from '~/types/table'
 import type { AdminOrganization } from '~/types/domain'
-import type { ListResponse } from '~/types/api-spec'
 import { parseListPageTotal } from '~/utils/table'
 
 export function useAdminOrganizationsTableConfig(): DataTableConfig<AdminOrganization> {
