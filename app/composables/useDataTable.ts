@@ -166,19 +166,19 @@ export function useDataTable<T extends { id?: string }>(config: DataTableConfig<
         accessorKey: column.accessorKey,
         header: column.sortable
           ? () => h(
-            'button',
-            {
-              type: 'button',
-              class: 'inline-flex items-center gap-1 font-semibold text-highlighted hover:text-primary',
-              onClick: () => toggleSort(column.id)
-            },
-            [
-              column.header,
-              sort.value?.id === column.id
-                ? h('span', { class: 'text-xs text-muted' }, sort.value.desc ? '↓' : '↑')
-                : null
-            ]
-          )
+              'button',
+              {
+                type: 'button',
+                class: 'inline-flex items-center gap-1 font-semibold text-highlighted hover:text-primary',
+                onClick: () => toggleSort(column.id)
+              },
+              [
+                column.header,
+                sort.value?.id === column.id
+                  ? h('span', { class: 'text-xs text-muted' }, sort.value.desc ? '↓' : '↑')
+                  : null
+              ]
+            )
           : column.header,
         cell: ({ row }) => {
           const value = typeof column.cell === 'function'
